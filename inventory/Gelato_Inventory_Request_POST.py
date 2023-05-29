@@ -11,7 +11,7 @@ def handler(pd: "pipedream"):
         ]
     }
     header = {"Content-Type":"application/json"}
-    r = requests.post(url, json=body, headers=header)
+    r = requests.post(url, json=body, headers=header, timeout=5)
     data = r.json()
     # print(pd.steps["trigger"]["context"]["id"])
     # Return data for use in future steps
