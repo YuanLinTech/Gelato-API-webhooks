@@ -1,3 +1,5 @@
+# Send_HTTP_POST_Request
+
 import requests
 
 def handler(pd: "pipedream"):
@@ -12,11 +14,12 @@ def handler(pd: "pipedream"):
     }
     header = {"Content-Type":"application/json"}
     r = requests.post(url, json=body, headers=header, timeout=5)
-    data = r.json()
+    product_skus = pd.steps["trigger"]["event"]["body"]["SKU"]
     # print(pd.steps["trigger"]["context"]["id"])
     # Return data for use in future steps
-    return data
+    return product_skus
 
+# Return_stock_status
 def get_stock_status(product_SKUs):
     stock_status = {}
     for sku in product_SKUs:
