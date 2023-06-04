@@ -74,10 +74,12 @@ def produce_bunch_tasks():
     for i in range(n):
         msg = produce_task(batchid, i)
         resp = send_webhook(msg)
-        if (resp >= 300):
-            time.sleep(5)
-            resp = send_webhook(msg)
-        
+        for _ in range(2):
+            if (resp >= 300):
+                time.sleep(5)
+                resp = send_webhook(msg)
+            else:
+                break
         print(i, "out of ", n, " -- Status", resp, " -- Message = ", msg)
         time.sleep(config.WAIT_TIME)
         # yield resp, n, msg
