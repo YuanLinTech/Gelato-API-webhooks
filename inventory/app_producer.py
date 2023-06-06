@@ -18,6 +18,6 @@ def producetasks():
     print("producetasks")
     return Response(stream_template('producer.html', data= tasks_producer.produce_bunch_tasks() ))
 
-# To stop the app.run() function from being automatically executed when the app_producer.py file is imported as a module to another file.
+# Stop the app.run() function from being automatically executed when the app_producer.py file is imported as a module to another file.
 if __name__ == "__main__":
    app.run(host="localhost",port=5000, debug=True)
