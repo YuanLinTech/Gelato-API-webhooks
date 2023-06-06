@@ -82,4 +82,12 @@ def produce_bunch_tasks():
                 break
         print(i, "out of ", n, " -- Status", resp, " -- Message = ", msg)
         time.sleep(config.WAIT_TIME)
-        # yield resp, n, msg
+        # Return a generator that enables the values of resp, n (passed as total) and msg to be retrieved one by one and passed to the "producer.html" file
+        yield resp, n, msg
+        
+# To stop the produce_bunch_tasks() function from being automatically executed when the tasks_producer.py file is imported as a module to another file.
+# The produce_bunch_tasks() function will still be executed when running the file on its own.
+# resp, total, and msg will be passed as variables to the template "producer.html" file:
+if __name__ == "__main__":
+     for resp, total, msg in produce_bunch_tasks():
+        pass
