@@ -15,7 +15,7 @@ def index():
 
 @app.route('/producetasks', methods=['POST'])
 def producetasks():
-    print("producetasks")
+    print("Producing tasks")
     return Response(stream_template('producer.html', data= tasks_producer.produce_bunch_tasks() ))
 
 # Stop the app.run() function from being automatically executed when the app_producer.py file is imported as a module to another file.
