@@ -13,23 +13,7 @@
     </div>
     <div>
       <div id="Messages"></div>
-        {% for rsp,total, msg in data: %}
-          <script>
-              var rsp   = "{{ rsp }}";
-              var total = "{{ total }}";
-              var msg   = "{{ msg }}";
-              var lineidx = "{{ loop.index }}";
-              //If the webhook request succeeds color it in blue else in red.
-              if (rsp == '200') {
-                  rsp = rsp.fontcolor("blue");
-              }
-              else {
-                  rsp = rsp.fontcolor("red");
-              }
-              //Add the details of the generated task to the Messages section.
-              document.getElementById('Messages').innerHTML += "<br>" + lineidx  + " out of " + total + " -- "+ rsp + " -- " + msg;
-          </script>
-        {% endfor %}
+       
     </div>
   </body>
 </html>
