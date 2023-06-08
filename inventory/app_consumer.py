@@ -30,7 +30,7 @@ def consumetasks():
         data = request.json
         if data:
            print("Received Data = ", data)
-           roomid =  app.config['uid']
+           roomid = app.config['uid']
            var = json.dumps(data)
            send_message(event='msg', namespace='/collectHooks', room=roomid, message=var)
     return 'OK'
