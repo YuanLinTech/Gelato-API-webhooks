@@ -64,14 +64,13 @@ def send_webhook(msg):
 '''
 Webhooks will try to send the request data 3 times, with 5 seconds delay between each try, 
 if an HTTP status 2xx is not returned.
-
 '''
 
 # Execute Fake Tasks
 def produce_bunch_tasks():
     n = random.randint(config.MIN_NBR_TASKS, config.MAX_NBR_TASKS)
     batchid = str(uuid.uuid4())
-    for i in range(n):
+    for i in range(1, n+1):
         msg = produce_task(batchid, i)
         resp = send_webhook(msg)
         for _ in range(2):

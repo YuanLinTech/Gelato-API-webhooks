@@ -1,4 +1,4 @@
-from flask import render_template, request,session
+from flask import render_template, request
 from flask_socketio import join_room
 from init_consumer import app, socketio
 import json
@@ -16,11 +16,10 @@ def send_message(event, namespace, room, message):
 
 # Registers a function to be run before the first request to this instance of the application
 # Create a unique session ID and store it within the application configuration file
-@app.before_first_request
 def initialize_params():
     if not hasattr(app.config,'uid'):
         sid = str(uuid.uuid4())
-        app.config['uid'] = sid
+        setattr(app.config, 'uid', sid)
         print("initialize_params - Session ID stored =", sid)
 
 # Receive the webhooks and emit websocket events
