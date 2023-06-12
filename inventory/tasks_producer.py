@@ -38,7 +38,7 @@ def produce_task(batchid, taskid):
         SKUList.append("_".join(fakeTasks.SKUs()))
 
     # Message composition
-    message = {"version": "1.0", 'batchid': batchid, 'requestid': taskid, "SKU": SKUList}
+    message = {'version': '1.0', 'batchid': batchid, 'requestid': taskid, 'SKU': SKUList}
     return message
 
 # Send a webhook request to a specified URL

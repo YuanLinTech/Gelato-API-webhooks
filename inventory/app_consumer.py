@@ -1,8 +1,7 @@
 from flask import render_template, request
 from flask_socketio import join_room
 from init_consumer import app, socketio
-import json
-import uuid
+import json, uuid
 
 #Render the assigned template file
 @app.route("/", methods=['GET'])
@@ -14,13 +13,10 @@ def send_message(event, namespace, room, message):
     # print("Message = ", message)
     socketio.emit(event, message, namespace=namespace, room=room)
 
-# Registers a function to be run before the first request to this instance of the application
 # Create a unique session ID and store it within the application configuration file
-def initialize_params():
-    if not hasattr(app.config,'uid'):
-        sid = str(uuid.uuid4())
-        setattr(app.config, 'uid', sid)
-        print("initialize_params - Session ID stored =", sid)
+sid = str(uuid.uuid4())
+app.config.update({'uid': sid})
+print("initialize_params - Session ID stored =", sid)
 
 # Receive the webhooks and emit websocket events
 @app.route('/consumetasks', methods=['POST'])
@@ -29,7 +25,7 @@ def consumetasks():
         data = request.json
         if data:
            print("Received Data = ", data)
-           roomid = app.config['uid']
+           roomid = app.config['uid'] # Generate Room ID
            var = json.dumps(data)
            send_message(event='msg', namespace='/collectHooks', room=roomid, message=var)
     return 'OK'
