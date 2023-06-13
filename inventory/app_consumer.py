@@ -1,7 +1,16 @@
-from flask import render_template, request
+from flask import Response, render_template, request
 from flask_socketio import join_room
 from init_consumer import app, socketio
+import tasks_consumer
 import json, uuid
+
+# Render a template with a given context as a stream and return a TemplateStream
+def render_template_stream(template_name, **context):
+    app.update_template_context(context) # Update the template context with some commonly used variables. 
+    t = app.jinja_env.get_template(template_name) # jinja2.Environment.get_template() # Load a template by name with loader and return a Template.
+    rv = t.stream(context) # jinja2.Template.stream # Return a TemplateStream that returns one function after another as strings
+    rv.enable_buffering(5) # jinja2.environment.TemplateStream.enable_buffering # Buffer 5 items before yielding them
+    return rv # Return a TemplateStream
 
 #Render the assigned template file
 @app.route("/", methods=['GET'])
@@ -28,9 +37,8 @@ def consumetasks():
            roomid = app.config['uid'] # Generate Room ID
            var = json.dumps(data)
            send_message(event='msg', namespace='/collectHooks', room=roomid, message=var)
-           # print("Producing tasks")
-           # return Response(stream_template('producer.html', data = tasks_producer.produce_bunch_tasks()))
-    return 'OK'
+           print("Consuming tasks")
+           return Response(render_template_stream('consumer.html', data = tasks_consumer.sendStockStatus()))
 
 #Execute on connecting
 @socketio.on('connect', namespace='/collectHooks')
