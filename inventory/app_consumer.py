@@ -38,7 +38,7 @@ def consumetasks():
            var = json.dumps(data)
            send_message(event='msg', namespace='/collectHooks', room=roomid, message=var)
            print("Consuming tasks")
-           return Response(render_template_stream('consumer.html', data = tasks_consumer.sendStockStatus()))
+           return Response(render_template_stream('consumer.html', stockStatus = tasks_consumer.sendStockStatus()))
 
 #Execute on connecting
 @socketio.on('connect', namespace='/collectHooks')
