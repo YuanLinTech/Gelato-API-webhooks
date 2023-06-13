@@ -1,7 +1,8 @@
 import csv
 
 SKUlist = []
-with open('NZ_NVJ_Apparel_SKUs_sheet.csv', newline='') as csvfile:
-    spamreader = csv.reader(csvfile, delimiter=',', quotechar='"')
-    for row in spamreader:
-         SKUlist.append(row[0])
+def sendStockStatus():
+    with open('NZ_NVJ_Apparel_SKUs_sheet.csv', newline='') as csvFile:
+        stockReader = csv.reader(csvFile, delimiter=',', quotechar='"')
+        for row in stockReader:
+             SKUlist.append(row[0])
