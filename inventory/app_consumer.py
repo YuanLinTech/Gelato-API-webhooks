@@ -12,7 +12,7 @@ def render_template_stream(template_name, **context):
     rv.enable_buffering(5) # jinja2.environment.TemplateStream.enable_buffering # Buffer 5 items before yielding them
     return rv # Return a TemplateStream
 
-#Render the assigned template file
+# Render the assigned template file
 @app.route("/", methods=['GET'])
 def index():
     return render_template('consumer.html')
@@ -40,19 +40,19 @@ def consumetasks():
            print("Consuming tasks")
            return Response(render_template_stream('consumer.html', stockStatus = tasks_consumer.sendStockStatus()))
 
-#Execute on connecting
+# Execute on connecting
 @socketio.on('connect', namespace='/collectHooks')
 def socket_connect():
     # Display message upon connecting to the namespace
     print('Client Connected To NameSpace /collectHooks - ', request.sid)
 
-#Execute on disconnecting
+# Execute on disconnecting
 @socketio.on('disconnect', namespace='/collectHooks')
 def socket_connect():
     # Display message upon disconnecting from the namespace
     print('Client disconnected From NameSpace /collectHooks - ', request.sid)
 
-#Execute upon joining a specific room
+# Execute upon joining a specific room
 @socketio.on('join_room', namespace='/collectHooks')
 def on_room():
     if app.config['uid']:
@@ -61,12 +61,12 @@ def on_room():
         print(f"Socket joining room {room}")
         join_room(room)
 
-#Execute upon encountering any error related to the websocket
+# Execute upon encountering any error related to the websocket
 @socketio.on_error_default
 def error_handler(e):
     # Display message on error.
     print(f"socket error: {e}, {str(request.event)}")
 
-#Run using port 5001
+# Run using port 5001
 if __name__ == "__main__":
     socketio.run(app,host='localhost', port=5001,debug=True)
