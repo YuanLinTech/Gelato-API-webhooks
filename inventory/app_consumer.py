@@ -28,6 +28,8 @@ def consumetasks():
            roomid = app.config['uid'] # Generate Room ID
            var = json.dumps(data)
            send_message(event='msg', namespace='/collectHooks', room=roomid, message=var)
+           # print("Producing tasks")
+           # return Response(stream_template('producer.html', data = tasks_producer.produce_bunch_tasks()))
     return 'OK'
 
 #Execute on connecting
