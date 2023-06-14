@@ -18,9 +18,10 @@ def index():
     return render_template('consumer.html')
 
 # Create a unique session ID and store it within the application configuration file
-sid = str(uuid.uuid4())
-app.config.update({'uid': sid})
-print("initialize_params - Session ID stored =", sid)
+if not hasattr(app.config,'uid'):
+    sid = str(uuid.uuid4())
+    app.config['uid'] = sid
+    print("initialize_params - Session ID stored =", sid)
 
 @app.route('/getstockstatus', methods=['POST'])
 def get_stock_status():
