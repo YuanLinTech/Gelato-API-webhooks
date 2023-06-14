@@ -30,7 +30,7 @@ print("initialize_params - Session ID stored =", sid)
 
 # Receive the webhook requests and emit a SocketIO event back to the client
 @app.route('/consumetasks', methods=['POST'])
-def consumetasks():
+def consume_tasks():
     if request.method == 'POST':
         data = request.json
         if data:
@@ -40,10 +40,11 @@ def consumetasks():
            send_message(event='msg', namespace='/collectHooks', room=roomid, message=var)
     return 'OK'
 
-            
-           
-return Response(render_template_stream('consumer.html', stockStatus = tasks_consumer.sendStockStatus()))
-
+@app.route('/getstockstatus', methods=['POST'])
+def get_stock_status():
+    print("Retrieving stock status")
+    return Response(render_template_stream('consumer.html', stockStatus = tasks_consumer.produce_bunch_tasks()))            
+    
 # Execute on connecting
 @socketio.on('connect', namespace='/collectHooks')
 def socket_connect():
