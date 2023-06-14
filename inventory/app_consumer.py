@@ -38,7 +38,7 @@ def consume_tasks():
            roomid =  app.config['uid']
            var = json.dumps(data)
            send_message(event='msg', namespace='/collectHooks', room=roomid, message=var)
-    return 'OK'
+    return data
 
 @app.route('/getstockstatus', methods=['POST'])
 def get_stock_status():
