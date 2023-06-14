@@ -1,21 +1,19 @@
 import csv
-
-SKUlist = []
+from flask import request
+from init_consumer import socketio
+import json
 
 # Receive the webhook requests and emit a SocketIO event back to the client
-@app.route('/consumetasks', methods=['POST'])
-def consume_tasks():
+def send_message(data, roomid):
     if request.method == 'POST':
         data = request.json
-        if data:
-           print("Received Data = ", data)
-           roomid =  app.config['uid']
-           var = json.dumps(data)
-           send_message(event='msg', namespace='/collectHooks', room=roomid, message=var)
-    return 'OK'
+        var = json.dumps(data)
+        socketio.emit(event = 'Send_stock_status', message = var, namespace = '/collectHooks', room = roomid)
+    return data
 
 def sendStockStatus():
     with open('NZ_NVJ_Apparel_SKUs_sheet.csv', newline='') as csvFile:
         stockReader = csv.reader(csvFile, delimiter=',', quotechar='"')
+        SKUlist = []
         for row in stockReader:
              SKUlist.append(row[0])

@@ -70,7 +70,7 @@ if an HTTP status 2xx is not returned.
 def produce_bunch_tasks():
     n = random.randint(config.MIN_NBR_TASKS, config.MAX_NBR_TASKS)
     batchid = str(uuid.uuid4())
-    for i in range(1, n+1):
+    for i in range(1, n + 1):
         msg = produce_task(batchid, i)
         resp = send_webhook(msg)
         for _ in range(2):
