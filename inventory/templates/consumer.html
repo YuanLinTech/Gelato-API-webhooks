@@ -7,13 +7,17 @@
   </head>
   <body class="container">
     <h1>Stock Sheet</h1>
-    <div id="stockSheet"></div>
+    <table id="stockSheet">
+      <tr>
+        <th scope="col">SKU</th>
+        <th scope="col">Stock Status</th>
+      </tr>
+    </table>
     {% for [SKU, Stock_status] of Object.entries(stockStatus): %}
         <script>
-          SKUarray.forEach((SKU)=>{
-            document.getElementById('Messages').innerHTML += SKU + "," + "<br>"
-          });
-          document.getElementById('Messages').innerHTML += "}"
+          var SKU = "{{SKU}}";
+          var stock_status = "{{Stock_status}}"
+          document.getElementById('stockSheet').innerHTML += "<tr>" + "<td>"+ SKU + "</td>" + "<td>"+ stock_status + "</td>" + "</tr>"
         </script>
     {% endfor %}
   </body>
