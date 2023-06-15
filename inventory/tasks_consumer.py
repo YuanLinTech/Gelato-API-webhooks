@@ -11,15 +11,21 @@ def send_message(data, roomid):
     return 'OK'
 
 def sendStockStatus():
+    SKUlist = []
+    stockSheet = {}
     with open('NZ_NVJ_Apparel_SKUs_sheet.csv', newline='') as csvFile:
         stockReader = csv.reader(csvFile, delimiter=',', quotechar='"')
-        SKUlist = []
         for row in stockReader:
             SKUlist.append(row[0])
     if request.method == 'POST':
         stockInfo = request.json
         stockDict = json.loads(stockInfo)
-        for stock in stockList:
+        for stock in stockDict['SKU']:
             if stock in SKUlist:
-    return      
+                stockSheet.update({'SKU':stock})
+                stockSheet.update({'stock_status':'In Stock'})
+            else:
+                stockSheet.update({'SKU':stock})
+                stockSheet.update({'stock_status':'Out of Stock'})
+    return stockSheet     
             
