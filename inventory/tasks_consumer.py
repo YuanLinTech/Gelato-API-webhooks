@@ -5,11 +5,15 @@ import json
 
 # Receive the webhook requests and emit a SocketIO event back to the client
 def send_message(data, roomid):
+    status_code = 0
     if request.method == 'POST':
         var = json.dumps(data)
         socketio.emit(event = 'Send_stock_status', message = var, namespace = '/collectHooks', room = roomid)
-    return 'OK'
-
+        status_code = 200
+    else:
+        status_code = 405 # Method not allowed
+    return status_code
+    
 def sendStockStatus():
     SKUlist = []
     stockSheet = {}
@@ -27,5 +31,4 @@ def sendStockStatus():
             else:
                 stockSheet.update({'SKU':stock})
                 stockSheet.update({'stock_status':'Out of Stock'})
-    return stockSheet     
-            
+    return stockSheet
