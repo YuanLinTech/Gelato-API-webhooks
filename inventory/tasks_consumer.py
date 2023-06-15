@@ -15,4 +15,11 @@ def sendStockStatus():
         stockReader = csv.reader(csvFile, delimiter=',', quotechar='"')
         SKUlist = []
         for row in stockReader:
-             SKUlist.append(row[0])
+            SKUlist.append(row[0])
+    if request.method == 'POST':
+        stockInfo = request.json
+        stockDict = json.loads(stockInfo)
+        for stock in stockList:
+            if stock in SKUlist:
+    return      
+            
