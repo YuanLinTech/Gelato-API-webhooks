@@ -1,7 +1,7 @@
 import csv
 from flask import request
 from init_consumer import app, socketio
-import json
+import json, uuid
 
 # Create a unique session ID and store it within the application configuration file 
 def initialize_params():

@@ -8,7 +8,7 @@
   <body class="container">
     <h1>Stock Sheet</h1>
     <div id="stockSheet"></div>
-    {% for SKU, stock_status in stockStatus.items(): %}
+    {% for (SKU, Stock_status) in stockStatus.items(): %}
         <script>
           SKUarray.forEach((SKU)=>{
             document.getElementById('Messages').innerHTML += SKU + "," + "<br>"
