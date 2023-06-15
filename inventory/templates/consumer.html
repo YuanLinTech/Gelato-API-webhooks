@@ -6,5 +6,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   </head>
   <body class="container">
+    <h1>Stock Status</h1>
+    <div id="stockSheet"></div>
+    {% for rsp,total, msg in stockStatus: %}
+        <script>
+          SKUarray.forEach((SKU)=>{
+            document.getElementById('Messages').innerHTML += SKU + "," + "<br>"
+          });
+          document.getElementById('Messages').innerHTML += "}"
+        </script>
+    {% endfor %}
   </body>
 </html>
