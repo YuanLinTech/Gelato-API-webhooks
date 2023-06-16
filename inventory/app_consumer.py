@@ -19,7 +19,7 @@ def index():
 
 # Registers a function to be run before the first request to this instance of the application
 # Create a unique session ID and store it within the application configuration file
-@app.before_first_request
+@app.before_request
 def initialize_params():
     if not hasattr(app.config,'uid'):
         sid = str(uuid.uuid4())
