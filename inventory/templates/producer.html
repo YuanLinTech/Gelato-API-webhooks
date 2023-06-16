@@ -13,7 +13,7 @@
     </div>
     <div>
       <div id="Messages"></div>
-        {% for rsp,total, msg in data: %}
+        {% for rsp,total, msg in data %}
           <script>
             var rsp  = "{{ rsp }}";
             var total = "{{ total }}";
@@ -31,9 +31,9 @@
             document.getElementById('Messages').innerHTML += ("<br>" + lineidx  + " out of " + total + " -- "+ rsp + " -- " + 
             "{'version': '1.0', 'batchid': '{{msg['batchid']}}', 'requestid': '{{msg['requestid']}}', 'SKU': " + "<br>");
             SKUarray.forEach((SKU)=>{
-              document.getElementById('Messages').innerHTML += SKU + "," + "<br>"
+              document.getElementById("Messages").innerHTML += SKU + "," + "<br>"
             });
-            document.getElementById('Messages').innerHTML += "}"
+            document.getElementById("Messages").innerHTML += "}"
           </script>
         {% endfor %}
     </div>

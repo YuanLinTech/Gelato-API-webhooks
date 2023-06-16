@@ -13,11 +13,11 @@
         <th scope="col">Stock Status</th>
       </tr>
     </table>
-    {% for SKU, Stock_status in stockStatus.items(): %}
+    {% for SKU, Stock_status in stockStatus.items() %}
         <script>
           var SKU = "{{SKU}}";
-          var Stock_status = "{{Stock_status}}"
-          document.getElementById('stockSheet').innerHTML += "<tr>" + "<td>"+ SKU + "</td>" + "<td>"+ Stock_status + "</td>" + "</tr>"
+          var Stock_status = "{{Stock_status}}";
+          document.getElementById("stockSheet").innerHTML += "<tr>" + "<td>"+ SKU + "</td>" + "<td>"+ Stock_status + "</td>" + "</tr>"
         </script>
     {% endfor %}
   </body>

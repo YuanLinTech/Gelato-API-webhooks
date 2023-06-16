@@ -2,7 +2,7 @@ from flask import Response, render_template, request
 from flask_socketio import join_room
 from init_consumer import app, socketio
 import tasks_consumer
-import json, uuid
+import uuid
 
 # Render a template with a given context as a stream and return a TemplateStream
 def render_template_stream(template_name, **context):
@@ -17,13 +17,16 @@ def render_template_stream(template_name, **context):
 def index():
     return render_template('consumer.html')
 
+# Registers a function to be run before the first request to this instance of the application
 # Create a unique session ID and store it within the application configuration file
-if not hasattr(app.config,'uid'):
-    sid = str(uuid.uuid4())
-    app.config['uid'] = sid
-    print("initialize_params - Session ID stored =", sid)
+@app.before_first_request
+def initialize_params():
+    if not hasattr(app.config,'uid'):
+        sid = str(uuid.uuid4())
+        app.config['uid'] = sid
+        print("initialize_params - Session ID stored =", sid)
 
-@app.route('/getstockstatus', methods=['POST'])
+@app.route('/consumetasks', methods=['POST'])
 def get_stock_status():
     print("Retrieving stock status")
     return Response(render_template_stream('consumer.html', stockStatus = tasks_consumer.sendStockStatus()))            
