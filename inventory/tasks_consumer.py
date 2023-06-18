@@ -28,13 +28,11 @@ def sendStockStatus():
         stockInfo = request.json
         stockStr = str(stockInfo) # Since "stockInfo" is a dict, it has to be converted into a JSON string to be parsed.
         stockStr = stockStr.replace("\'", "\"") # As JSON only allows enclosing strings with double quotes, use this statement to replace single \' with \"
-        stockDict = json.loads(stockStr)
+        stockDict = json.loads(stockStr) # Convert JSON string to dictionary
         for stock in stockDict["SKU"]:
             if stock in SKUlist:
-                stockSheet.update({"SKU":stock})
-                stockSheet.update({"Stock_status":"In Stock"})
+                stockSheet.update({str(stock):"In Stock"})
             else:
-                stockSheet.update({"SKU":stock})
-                stockSheet.update({"Stock_status":"Out of Stock"})
+                stockSheet.update({str(stock):"Out of Stock"})
     send_message(stockSheet)
     return stockSheet

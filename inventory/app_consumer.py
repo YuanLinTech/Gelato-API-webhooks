@@ -5,7 +5,7 @@ import tasks_consumer
 import uuid
 
 # Render a template with a given context as a stream and return a TemplateStream
-def render_template_stream(template_name, **context):
+def render_template_stream(template_name, **context): # **context means the context must be a dictionary.
     app.update_template_context(context) # Update the template context with some commonly used variables. 
     t = app.jinja_env.get_template(template_name) # jinja2.Environment.get_template() # Load a template by name with loader and return a Template.
     rv = t.stream(context) # jinja2.Template.stream # Return a TemplateStream that returns one function after another as strings
