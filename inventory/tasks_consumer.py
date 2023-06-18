@@ -35,4 +35,5 @@ def sendStockStatus():
             else:
                 stockSheet.update({str(stock):"Out of Stock"})
     send_message(stockSheet)
+    # print(stockSheet)
     return stockSheet
