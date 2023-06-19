@@ -46,8 +46,8 @@ def send_webhook(msg):
     try:
         # Post a webhook message
         # default is a function applied to objects that are not serializable = it converts them to str
-        resp = requests.post(config.WEBHOOK_RECEIVER_URL, data=json.dumps(msg, sort_keys=True, default=str), 
-                             headers={"Content-Type": "application/json"}, timeout=1.0)
+        resp = requests.post(config.WEBHOOK_RECEIVER_URL, data=json.dumps(
+            msg, sort_keys=True, default=str), headers = {"Content-Type": "application/json"}, timeout=1.0)
         # Raises an HTTPError if an error has occurred during the process (used for debugging).
         resp.raise_for_status()
     except requests.exceptions.HTTPError as err:

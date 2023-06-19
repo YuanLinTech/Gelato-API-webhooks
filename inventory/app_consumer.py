@@ -15,7 +15,7 @@ def render_template_stream(template_name, **context): # **context means the cont
 # Render the assigned template file
 @app.route("/", methods=['GET'])
 def index():
-    return render_template('consumer.html')
+    return render_template('consumer.html', stockStatus = {})
 
 # Registers a function to be run before the first request to this instance of the application
 # Create a unique session ID and store it within the application configuration file
@@ -30,7 +30,7 @@ def initialize_params():
 def get_stock_status():
     print("Retrieving stock status")
     return Response(render_template_stream('consumer.html', stockStatus = tasks_consumer.sendStockStatus()))            
-    
+
 # Execute on connecting
 @socketio.on('connect', namespace='/collectHooks')
 def socket_connect():
