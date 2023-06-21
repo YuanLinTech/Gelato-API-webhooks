@@ -1,4 +1,4 @@
-from flask import Response, render_template, request
+from flask import render_template, Response, request
 from flask_socketio import join_room
 from init_consumer import app, socketio
 import tasks_consumer
@@ -12,11 +12,6 @@ def render_template_stream(template_name, **context): # **context means the cont
     rv.enable_buffering(5) # jinja2.environment.TemplateStream.enable_buffering # Buffer 5 items before yielding them
     return rv # Return a TemplateStream
 
-# Render the assigned template file
-@app.route("/", methods=['GET'])
-def index():
-    return render_template('consumer.html', stockStatus = {})
-
 # Registers a function to be run before the first request to this instance of the application
 # Create a unique session ID and store it within the application configuration file
 @app.before_request
@@ -26,37 +21,52 @@ def initialize_params():
         app.config['uid'] = sid
         print("initialize_params - Session ID stored =", sid)
 
-@app.route('/consumetasks', methods=['POST'])
+# Render the assigned template file
+@app.route("/", methods=['GET'])
+def index():
+    return render_template('consumer.html', stockStatus = {})
+       
+@app.route('/consumetasks', methods=['GET','POST'])
 def get_stock_status():
-    print("Retrieving stock status")
-    return Response(render_template_stream('consumer.html', stockStatus = tasks_consumer.sendStockStatus()))            
+    # Handle the POST request
+    if request.method == 'POST':
+        print("Retrieving stock status")
+        return Response(render_template_stream('consumer.html', stockStatus = tasks_consumer.sendStockStatus()))     
+    # Handle the GET request
+    elif request.method == 'GET':
+        return '''
+        <!doctype html>
+        <html>
+            <head>
+                <title>Stock Sheet</title>
+                <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+                <style>
+                    th,td{
+                        border: 1px solid rgb(190, 190, 190);
+                        padding: 10px;
+                    }
+                    table {
+                        border-collapse: collapse;
+                        border: 2px solid rgb(200, 200, 200);
+                        font-family: sans-serif;
+                    }
+                </style>
+            </head>
 
-# Execute on connecting
-@socketio.on('connect', namespace='/collectHooks')
-def socket_connect():
-    # Display message upon connecting to the namespace
-    print('Client Connected To NameSpace /collectHooks - ', request.sid)
-
-# Execute on disconnecting
-@socketio.on('disconnect', namespace='/collectHooks')
-def socket_connect():
-    # Display message upon disconnecting from the namespace
-    print('Client disconnected From NameSpace /collectHooks - ', request.sid)
-
-# Execute upon joining a specific room
-@socketio.on('join_room', namespace='/collectHooks')
-def on_room():
-    if app.config['uid']:
-        room = str(app.config['uid'])
-        # Display message upon joining a room specific to the session previously stored.
-        print(f"Socket joining room {room}")
-        join_room(room)
-
-# Execute upon encountering any error related to the websocket
-@socketio.on_error_default
-def error_handler(e):
-    # Display message on error.
-    print(f"socket error: {e}, {str(request.event)}")
+            <body class="container">
+                <h1>Stock Sheet</h1>
+                <div>
+                    <button id="consumeTasks">Check stock status</button>
+                </div>
+                <table id="stockSheet">
+                    <tr>
+                        <th scope="col">SKU</th>
+                        <th scope="col">Stock Status</th>
+                    </tr>
+                </table>
+            </body>
+        </html>
+        '''
 
 # Run using port 5001
 if __name__ == "__main__":

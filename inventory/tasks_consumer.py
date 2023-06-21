@@ -18,22 +18,23 @@ def send_message(data):
     
 # Retrieve the stock status of the products sent through the webhook requests and return them back to the client.   
 def sendStockStatus():
-    SKUlist = []
-    stockSheet = {}
+    request_data = request.get_json()
+    stockList = [] # List of products in stock
+    stockInfo = [] # List of products sent in the request
+    stockSheet = {} # Dictionary of products sent in the request and their stock status
     with open("NZ_NVJ_Apparel_SKUs_sheet.csv", newline='') as csvFile:
         stockReader = csv.reader(csvFile, delimiter=',', quotechar='"')
         for row in stockReader:
-            SKUlist.append(row[0])
-    if request.method == 'POST':
-        stockInfo = request.json
-        stockStr = str(stockInfo) # Since "stockInfo" is a dict, it has to be converted into a JSON string to be parsed.
-        stockStr = stockStr.replace("\'", "\"") # As JSON only allows enclosing strings with double quotes, use this statement to replace single \' with \"
-        stockDict = json.loads(stockStr) # Convert JSON string to dictionary
-        for stock in stockDict["SKU"]:
-            if stock in SKUlist:
-                stockSheet.update({str(stock):"In Stock"})
-            else:
-                stockSheet.update({str(stock):"Out of Stock"})
+            stockList.append(row[0])
+    
+    if request_data:
+        if 'SKU' in request_data:
+            stockInfo = request_data['SKU']
+            for stock in stockInfo:
+                if stock in stockList:
+                    stockSheet.update({str(stock):"In Stock"})
+                else:
+                    stockSheet.update({str(stock):"Out of Stock"})
     send_message(stockSheet)
-    # print(stockSheet)
+    print(stockSheet)
     return stockSheet

@@ -16,29 +16,15 @@
     </style>
   </head>
 
-  <!-- <body class="container">
-    <h1>Stock Sheet</h1>
-    <table id="stockSheet">
-      <tr>
-        <th scope="col">SKU</th>
-        <th scope="col">Stock Status</th>
-      </tr>
-    </table>
-    {% for SKU, Stock_status in stockStatus.items() %}
-        <script>
-          var SKU = "{{SKU}}";
-          var Stock_status = "{{Stock_status}}";
-          document.getElementById("stockSheet").innerHTML += "<tr>" + "<td>"+ SKU + "</td>" + "<td>"+ Stock_status + "</td>" + "</tr>"
-        </script>
-    {% endfor %}
-  </body> -->
-
   <body class="container">
     <h1>Stock Sheet</h1>
     <div>
-      <form method="post" id="consumeTasksForm" action = "/consumetasks">
-        <button type="submit" id="consumeTasks" form="consumeTasksForm">Check stock status</button>
-      </form>
+      <button id="consumeTasks">Check stock status</button>
+      <script>
+        document.getElementById("consumeTasks").onclick = function(){
+          location.href = "http://localhost:5001/consumetasks";
+        };
+      </script>
     </div>
     <table id="stockSheet">
       <tr>
