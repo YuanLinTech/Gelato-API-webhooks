@@ -3,17 +3,6 @@
   <head>
     <title>Stock Sheet</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <style>
-      th,td{
-        border: 1px solid rgb(190, 190, 190);
-        padding: 10px;
-      }
-      table {
-        border-collapse: collapse;
-        border: 2px solid rgb(200, 200, 200);
-        font-family: sans-serif;
-      }
-    </style>
   </head>
 
   <body class="container">
@@ -26,21 +15,19 @@
         };
       </script>
     </div>
-    <table id="stockSheet">
-      <tr>
-        <th scope="col">SKU</th>
-        <th scope="col">Stock Status</th>
-      </tr>
-    </table>
-    {% for SKU, Stock_status in stockStatus.items() %}
+    <div id="stockSheet"> </div>
+    {% for stock in stockInfo %}
+      {% if loop.index0 is even %}
         <script>
-          var table = document.getElementById("stockSheet");
-          var row = table.insertRow(-1); // Insert a new row at the last position
-          var cellSKU = row.insertCell(0);
-          var cellStock = row.insertCell(1);
-          cellSKU.innerHTML = "{{SKU}}";
-          cellStock.innerHTML = "{{Stock_status}}";
+          var SKU = "{{stock}}";
+          document.getElementById("stockSheet").innerHTML += ("Product" + SKU);
         </script>
+      {% elif loop.index0 is odd %}
+        <script>
+          var stockStatus = "{{stock}}";
+          document.getElementById("stockSheet").innerHTML += ("is" + stockStatus + "<br>");
+        </script>
+      {% endif %}
     {% endfor %}
   </body>
 </html>

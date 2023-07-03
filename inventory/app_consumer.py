@@ -24,33 +24,22 @@ def initialize_params():
 # Render the assigned template file
 @app.route("/", methods=['GET'])
 def index():
-    return render_template('consumer.html', stockStatus = {})
+    return render_template('consumer.html', stockInfo = {})
        
 @app.route('/consumetasks', methods=['GET','POST'])
-def get_stock_status():
+def getStockStatus():
     # Handle the POST request
     if request.method == 'POST':
         print("Retrieving stock status")
-        return Response(render_template_stream('consumer.html', stockStatus = tasks_consumer.sendStockStatus()))     
+        return Response(render_template_stream('consumer.html', stockInfo = tasks_consumer.sendStockStatus()))     
     # Handle the GET request
     elif request.method == 'GET':
         return '''
-        <!doctype html>
+         <!doctype html>
         <html>
             <head>
                 <title>Stock Sheet</title>
                 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-                <style>
-                    th,td{
-                        border: 1px solid rgb(190, 190, 190);
-                        padding: 10px;
-                    }
-                    table {
-                        border-collapse: collapse;
-                        border: 2px solid rgb(200, 200, 200);
-                        font-family: sans-serif;
-                    }
-                </style>
             </head>
 
             <body class="container">
@@ -58,12 +47,6 @@ def get_stock_status():
                 <div>
                     <button id="consumeTasks">Check stock status</button>
                 </div>
-                <table id="stockSheet">
-                    <tr>
-                        <th scope="col">SKU</th>
-                        <th scope="col">Stock Status</th>
-                    </tr>
-                </table>
             </body>
         </html>
         '''

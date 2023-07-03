@@ -1,5 +1,5 @@
 import csv
-from flask import request
+from flask import request, stream_with_context
 from init_consumer import app, socketio
 import json
 
@@ -15,26 +15,34 @@ def send_message(data):
     else:
         status_code = 405 # Method not allowed
     return status_code
-    
-# Retrieve the stock status of the products sent through the webhook requests and return them back to the client.   
+
+# Retrieve the stock status of the products sent through the webhook requests and return them back to the client. 
+@app.route('/consumetasks', methods=['POST'])
 def sendStockStatus():
-    request_data = request.get_json()
     stockList = [] # List of products in stock
-    stockInfo = [] # List of products sent in the request
-    stockSheet = {} # Dictionary of products sent in the request and their stock status
     with open("NZ_NVJ_Apparel_SKUs_sheet.csv", newline='') as csvFile:
         stockReader = csv.reader(csvFile, delimiter=',', quotechar='"')
         for row in stockReader:
             stockList.append(row[0])
     
-    if request_data:
-        if 'SKU' in request_data:
-            stockInfo = request_data['SKU']
-            for stock in stockInfo:
-                if stock in stockList:
-                    stockSheet.update({str(stock):"In Stock"})
-                else:
-                    stockSheet.update({str(stock):"Out of Stock"})
-    send_message(stockSheet)
-    print(stockSheet)
-    return stockSheet
+    stockSheet = {} # Dictionary of products sent in the request and their stock status
+
+    def generateStockStatus():
+        request_data = request.get_json()
+        if request_data:
+            if 'SKU' in request_data:
+                stockRequest = request_data['SKU'] # List of products sent in the request
+                for stock in stockRequest:
+                    if stock in stockList:
+                        stockStatus = "In Stock"
+                        stockSheet.update({str(stock):stockStatus})
+                    else:
+                        stockStatus = "Out of Stock"
+                        stockSheet.update({str(stock):stockStatus})
+
+                    send_message(stockSheet)
+                    yield str(stock)
+                    yield stockStatus
+                        
+    return stream_with_context(generateStockStatus())
+   
