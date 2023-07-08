@@ -24,7 +24,7 @@ def initialize_params():
 # Render the assigned template file
 @app.route("/", methods=['GET'])
 def index():
-    return render_template('consumer.html', stockInfo = {})
+    return render_template('consumer.html')
        
 @app.route('/consumetasks', methods=['GET','POST'])
 def getStockStatus():

@@ -25,10 +25,11 @@ def sendStockStatus():
         for row in stockReader:
             stockList.append(row[0])
     
-    stockSheet = {} # Dictionary of products sent in the request and their stock status
+    # stockSheet = {} # Dictionary of products sent in the request and their stock status
 
     def generateStockStatus():
         request_data = request.get_json()
+        stockSheet = {} # Dictionary of products sent in the request and their stock status
         if request_data:
             if 'SKU' in request_data:
                 stockRequest = request_data['SKU'] # List of products sent in the request
@@ -45,4 +46,3 @@ def sendStockStatus():
                     yield stockStatus
                         
     return stream_with_context(generateStockStatus())
-   

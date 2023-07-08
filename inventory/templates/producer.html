@@ -25,31 +25,31 @@
         <button type="submit" id="produceTasks" form="produceTasksForm">Produce Tasks</button>
       </form>
     </div>
-    <div>
-      <div id="Messages"></div>
-        {% for rsp,total, msg in data %}
-          <script>
-            var rsp  = "{{ rsp }}";
-            var total = "{{ total }}";
-            var SKUstr = "{{msg['SKU']}}";
-            var lineidx = "{{ loop.index }}";
-            var SKUarray = SKUstr.split(',');
-            //If the webhook request succeeds color it in blue else in red.
-            if (rsp == '200') {
-                rsp = rsp.fontcolor("blue");
-            }
-            else {
-                rsp = rsp.fontcolor("red");
-            }
-            //Add the details of the generated task to the Messages section.
-            document.getElementById('Messages').innerHTML += ("<br>" + lineidx  + " out of " + total + " -- "+ rsp + " -- " + 
-            "{'version': '1.0', 'batchid': '{{msg['batchid']}}', 'requestid': '{{msg['requestid']}}', 'SKU': " + "<br>");
-            SKUarray.forEach((SKU)=>{
-              document.getElementById("Messages").innerHTML += SKU + "," + "<br>"
-            });
-            document.getElementById("Messages").innerHTML += "}"
-          </script>
-        {% endfor %}
-    </div>
+    
+    <div id="Messages"></div>
+    {% for rsp,total, msg in data %}
+      <script>
+        var rsp  = "{{ rsp }}";
+        var total = "{{ total }}";
+        var SKUstr = "{{msg['SKU']}}";
+        var lineidx = "{{ loop.index }}";
+        var SKUarray = SKUstr.split(',');
+        //If the webhook request succeeds color it in blue else in red.
+        if (rsp == '200') {
+            rsp = rsp.fontcolor("blue");
+        }
+        else {
+            rsp = rsp.fontcolor("red");
+        }
+        //Add the details of the generated task to the Messages section.
+        document.getElementById('Messages').innerHTML += ("<br>" + lineidx  + " out of " + total + " -- "+ rsp + " -- " + 
+        "{'version': '1.0', 'batchid': '{{msg['batchid']}}', 'requestid': '{{msg['requestid']}}', 'SKU': " + "<br>");
+        SKUarray.forEach((SKU)=>{
+          document.getElementById("Messages").innerHTML += SKU + "," + "<br>"
+        });
+        document.getElementById("Messages").innerHTML += "}"
+      </script>
+    {% endfor %}
+    
   </body>
 </html>

@@ -15,19 +15,24 @@
         };
       </script>
     </div>
-    <div id="stockSheet"> </div>
-    {% for stock in stockInfo %}
-      {% if loop.index0 is even %}
-        <script>
-          var SKU = "{{stock}}";
-          document.getElementById("stockSheet").innerHTML += ("Product" + SKU);
-        </script>
-      {% elif loop.index0 is odd %}
-        <script>
-          var stockStatus = "{{stock}}";
-          document.getElementById("stockSheet").innerHTML += ("is" + stockStatus + "<br>");
-        </script>
-      {% endif %}
-    {% endfor %}
+
+    <div id="stockSheet"></div>
+    <script>
+      {% for stock in stockInfo %}
+          {% if loop.index0 is even %}
+              var SKU = "{{stock}}";
+              document.getElementById("stockSheet").innerHTML += ("Product " + SKU);
+          {% elif loop.index0 is odd %}
+              var stockStatus = "{{stock}}";
+              document.getElementById("stockSheet").innerHTML += (" is " + stockStatus + "<br>");
+          {% endif %}
+      {% endfor %}
+    </script>
+   
+
+    {# {% for num in range(stockInfo|length) if num is divisibleby 2 %}
+      <div> Product {{stockInfo[2*num]}} is {{stockInfo[2*num + 1]}} </div>
+    {% endfor %} #}
+    
   </body>
 </html>
