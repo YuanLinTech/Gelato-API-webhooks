@@ -9,5 +9,6 @@
         "jinja-html": "html",
         "vue-html": "html",
         "javascript": "javascriptreact"
-    }
+    },
+    "json.schemaDownload.enable": false
 }
