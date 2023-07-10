@@ -17,10 +17,9 @@
     </div>
 
     <div id="stockSheet"></div>
-
     {% for num in range(stockInfo|length) if num is divisibleby 2 %}
       <div> Product {{stockInfo[2*num]}} is {{stockInfo[2*num + 1]}} </div>
-    {% endfor %}
+    {% endfor %} 
     
   </body>
 </html>
